@@ -1,16 +1,28 @@
-# This is a sample Python script.
-
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+import os
+import requests
 
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+# Following example usage from https://developer.edamam.com/edamam-docs-recipe-api
+def edamam_search(query):
+    # In e.g. Heroku and Pycharm, environment variables can easily be provided
+    # Pass our Edamam credentials in with env variables so they're not in source code (keep them private)
+    app_id = os.environ['APP_ID']
+    app_key = os.environ['APP_KEY']
+
+    request = f"https://api.edamam.com/search?q={query}" \
+              f"&app_id={app_id}" \
+              f"&app_key={app_key}"
+
+    response = requests.get(request)
+    hits = response.json()['hits']
+
+    for hit in hits:
+        recipe = hit['recipe']
+        print(f"---{recipe['label']}---")
+        for ingredient in recipe['ingredients']:
+            print(f"   {ingredient['text']}")
 
 
-# Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    print_hi('PyCharm')
+    edamam_search('nutritional yeast')
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
