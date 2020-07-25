@@ -21,7 +21,7 @@ def search():
 
     with open('./templates/recipes.html') as file_:
         template = Template(file_.read())
-    return template.render(hits=hits) # first is what Jinja will look for in template
+    return template.render(ingredient=ingredient, hits=hits) # `a=b` Jinja finds `a` in template, uses `b`
 
 
 # Following example usage from https://developer.edamam.com/edamam-docs-recipe-api
