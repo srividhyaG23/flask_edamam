@@ -2,6 +2,7 @@ import os
 import requests
 from flask import Flask
 from flask import request
+from jinja2 import Template
 
 app = Flask(__name__)
 app.config["DEBUG"] = True
@@ -16,8 +17,11 @@ def home():
 def search():
     ingredient = request.args.get('ingredient')
 
-    response = edamam_search(ingredient)
-    return response
+    hits = edamam_search(ingredient)
+
+    with open('./templates/recipes.html') as file_:
+        template = Template(file_.read())
+    return template.render(hits=hits) # first is what Jinja will look for in template
 
 
 # Following example usage from https://developer.edamam.com/edamam-docs-recipe-api
@@ -34,14 +38,7 @@ def edamam_search(query):
     response = requests.get(curl)
     hits = response.json()['hits']
 
-    response = ""
-    for hit in hits:
-        recipe = hit['recipe']
-        response += f"---{recipe['label']}---<br>"
-        for ingredient in recipe['ingredients']:
-            response += f"{ingredient['text']}<br>"
-
-    return response
+    return hits
 
 
 if __name__ == '__main__':

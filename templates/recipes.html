@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<h1>Recipe results</h1>
+
+<ul>
+ {% for hit in hits %}
+    <h3>{{ hit.recipe.label }}</h3>
+     {% for ingredient in hit.recipe.ingredients %}
+        <ul>{{ ingredient.text }}</ul>
+    {% endfor %}
+{% endfor %}
+ </ul>
+
+</body>
+</html>
