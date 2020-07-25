@@ -1,16 +1,16 @@
 import os
 import requests
-from flask import Flask
+from flask import Flask, send_from_directory
 from flask import request
 from jinja2 import Template
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='static')
 app.config["DEBUG"] = True
 
 
 @app.route('/')
 def home():
-    return "hello world"
+    return send_from_directory('static', filename='index.html')
 
 
 @app.route('/recipes')
